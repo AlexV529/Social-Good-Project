@@ -2,63 +2,67 @@ import java.util.Scanner;
 
 public class UserStory {
 
-private String[] genre;
-private String[] guitar;
-private String[] band;
-
+private DataEntry[] data;
+  
 // no-argument constructor to read text files into arrays
   public UserStory() {
-     this.genre = FileReader.toStringArray("Genre.txt");
-  this.guitar = FileReader.toStringArray("Guitar.txt");
-    this.band = FileReader.toStringArray("Band.txt");
+    this.data = createData("Genre.txt", "Band.txt", "Guitar.txt");
   }
+
   // paramaterized constructor to read text files into arrays
-public UserStory(String GenreFile, String GuitarFile, String BandFile) {
-  this.genre = FileReader.toStringArray(GenreFile);
-  this.guitar = FileReader.toStringArray(GuitarFile);
-  this.band = FileReader.toStringArray(BandFile);
-}
-  
-
-  /*
-  accessor method 
-  counts the amount of guitars in the Guitar array
-  returns the amount
-  */
-  public int getGuitars(){
-  return guitar.length;
-}
-  /*
-  accessor method 
-  returns the amount of genres in the Genre array
-  */
-  public int getGenres(){
-    return genre.length;
+  public UserStory(String GenreFile, String BandFile, String GuitarFile) {
+    this.data = createData(GenreFile, BandFile, GuitarFile);
   }
-/*
-  accessor method that gets amount of bands
-  returns the amount of bands in the band array
-  */
-   public int getBands(){
-  return band.length;
-}
-  
+
   /*
-  returns a string of all the data
-  shows all the guitars and genres in the list paired togethor
+  counts the number of times a guitar pops up
+  returns the count
   */
-public String toString(){
-  String result = "----Genres and Guitars---- \n";
-  result += "Total Genres: " + genre.length + "\n";
-  result += "Total Guitars: " + guitar.length + "\n";
-  result += "Total Bands: " + band.length + "\n";
-  for (int i = 0; i < genre.length; i++) {
-    result += "Genre: " + genre[i] + " - Bands: " + band[i] + " - Guitar: " + guitar[i];
-    result += "\n";
+  public int countOccurence(String guitar) {
+    int count = 0;
+    for (DataEntry a : data) {
+      if (a.getGuitar().equalsIgnoreCase(guitar)) {
+        count++;
+      }
+    }
+    return count;
   }
-  return result;
-}
 
+  /*
+  prompts user to input a guitar
+  returns the input
+  */
+  public String promptUser() {
+    String result = "";
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter Guitar: ");
+    return scanner.nextLine();
+  }
 
-  
+  /*
+  creates arrays using the text files
+  returns the DataEntry array
+  */
+public DataEntry[] createData(String GenreFile, String BandFile, String GuitarFile) {
+  String[] genre = FileReader.toStringArray(GenreFile);
+  String[] band = FileReader.toStringArray(BandFile);
+  String[] guitar = FileReader.toStringArray(GuitarFile);
+  DataEntry[] dataArray = new DataEntry[genre.length];
+  for (int i = 0; i < genre.length; i++){
+    dataArray[i] = new DataEntry(genre[i], band[i], guitar[i]);
+  }
+  return dataArray;
+    }
+
+  //returns the total amount of genres, bands, and guitars, as a string
+  public String toString(){
+    String result = "----Genres and Guitars---- \n";
+    result += "Total Genres: " + data.length + "\n";
+    result += "Total Guitars: " + data.length + "\n";
+    result += "Total Bands: " + data.length + "\n";
+    for (DataEntry d : data) {
+      result += d.toString();
+    }
+    return result;
+     }
 }

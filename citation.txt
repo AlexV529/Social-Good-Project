@@ -1,0 +1,6 @@
+I used AI to help me debug the program and help fix any errors.
+
+It was also used to help figure out the toString methods 
+as there needed to be 2 for it to work.
+
+I used the code.org lesson 11 level 6A to help me with the countOccurence method.
